@@ -13,7 +13,20 @@ void setup() {
   servo.attach(7);
   lcd.begin(16, 2); // 16 columns, 2 rows
   lcd.setBacklight(WHITE);
-  lcd.print(rotation);
+  servo.write(rotation);
+  updateDisplay();
+}
+
+void updateDisplay() {
+  // Servoposition auslesen
+  int degrees = servo.read();
+  int microSeconds = servo.readMicroseconds();
+  String line1 = String(degrees) + " degrees";
+  lcd.setCursor(0, 0);
+  lcd.print(line1);
+  String line2 = String(microSeconds) + " microsecs";
+  lcd.setCursor(0, 1);
+  lcd.print(line2);
 }
 
 void loop() {
@@ -39,7 +52,7 @@ void loop() {
     }
     servo.write(rotation);
     lcd.clear();
-    lcd.print(rotation);
+    updateDisplay();
     pressedButtons = 0;
   }
 }
